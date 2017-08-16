@@ -3,6 +3,7 @@
 namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * User
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -20,13 +21,6 @@ class User
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="username", type="string", length=15, unique=true)
-     */
-    private $username;
 
     /**
      * @var string
@@ -57,109 +51,149 @@ class User
     private $pwd;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="salt", type="string", length=16, unique=true)
-     */
-    private $salt;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dtCreated", type="datetimetz")
      */
     private $dtCreated;
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
+    /* UserInterface methods */
+    public function getRoles()
     {
-        return $this->id;
+        return array('ROLE_USER');
     }
 
-    /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername($username)
+    public function getPassword()
     {
-        $this->username = $username;
-
-        return $this;
+        return $this->pwd;
     }
 
-    /**
-     * Get username
-     *
-     * @return string
-     */
+    public function getSalt()
+    {
+        return null;
+    }
+
     public function getUsername()
     {
-        return $this->username;
+        return $this->email;
     }
 
-    /**
-     * Set firstName
-     *
-     * @param string $firstName
-     *
-     * @return User
-     */
-    public function setFirstName($firstName)
+    public function eraseCredentials()
     {
-        $this->firstName = $firstName;
 
-        return $this;
     }
 
-    /**
-     * Get firstName
-     *
-     * @return string
-     */
-    public function getFirstName()
+    /* Serialize */
+    /** @see \Serializable::serialize() */
+    public function serialize()
     {
-        return $this->firstName;
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->pwd
+        ));
     }
 
-    /**
-     * Set lastName
-     *
-     * @param string $lastName
-     *
-     * @return User
-     */
-    public function setLastName($lastName)
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
     {
-        $this->lastName = $lastName;
-
-        return $this;
+        list (
+            $this->id,
+            $this->username,
+            $this->pwd
+        ) = unserialize($serialized);
     }
 
-    /**
-     * Get lastName
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
 
-    /**
+    // /**
+    //  * Get id
+    //  *
+    //  * @return int
+    //  */
+    // public function getId()
+    // {
+    //     return $this->id;
+    // }
+
+    // /**
+    //  * Set username
+    //  *
+    //  * @param string $username
+    //  *
+    //  * @return User
+    //  */
+    // public function setUsername($username)
+    // {
+    //     $this->username = $username;
+
+    //     return $this;
+    // }
+
+    // /**
+    //  * Get username
+    //  *
+    //  * @return string
+    //  */
+    // public function getUsername()
+    // {
+    //     return $this->username;
+    // }
+
+    // /**
+    //  * Set firstName
+    //  *
+    //  * @param string $firstName
+    //  *
+    //  * @return User
+    //  */
+    // public function setFirstName($firstName)
+    // {
+    //     $this->firstName = $firstName;
+
+    //     return $this;
+    // }
+
+    // /**
+    //  * Get firstName
+    //  *
+    //  * @return string
+    //  */
+    // public function getFirstName()
+    // {
+    //     return $this->firstName;
+    // }
+
+    // /**
+    //  * Set lastName
+    //  *
+    //  * @param string $lastName
+    //  *
+    //  * @return User
+    //  */
+    // public function setLastName($lastName)
+    // {
+    //     $this->lastName = $lastName;
+
+    //     return $this;
+    // }
+
+    // /**
+    //  * Get lastName
+    //  *
+    //  * @return string
+    //  */
+    // public function getLastName()
+    // {
+    //     return $this->lastName;
+    // }
+
+    /*
      * Set email
      *
      * @param string $email
      *
      * @return User
-     */
+     */     
     public function setEmail($email)
     {
         $this->email = $email;
@@ -201,52 +235,52 @@ class User
         return $this->pwd;
     }
 
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     *
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
+    // /**
+    //  * Set salt
+    //  *
+    //  * @param string $salt
+    //  *
+    //  * @return User
+    //  */
+    // public function setSalt($salt)
+    // {
+    //     $this->salt = $salt;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get salt
-     *
-     * @return string
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
+    // /**
+    //  * Get salt
+    //  *
+    //  * @return string
+    //  */
+    // public function getSalt()
+    // {
+    //     return $this->salt;
+    // }
 
-    /**
-     * Set dtCreated
-     *
-     * @param \DateTime $dtCreated
-     *
-     * @return User
-     */
-    public function setDtCreated($dtCreated)
-    {
-        $this->dtCreated = $dtCreated;
+    // /**
+    //  * Set dtCreated
+    //  *
+    //  * @param \DateTime $dtCreated
+    //  *
+    //  * @return User
+    //  */
+    // public function setDtCreated($dtCreated)
+    // {
+    //     $this->dtCreated = $dtCreated;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get dtCreated
-     *
-     * @return \DateTime
-     */
-    public function getDtCreated()
-    {
-        return $this->dtCreated;
-    }
+    // /**
+    //  * Get dtCreated
+    //  *
+    //  * @return \DateTime
+    //  */
+    // public function getDtCreated()
+    // {
+    //     return $this->dtCreated;
+    // }
 }
 
