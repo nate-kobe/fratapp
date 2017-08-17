@@ -11,37 +11,37 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class LoginController extends Controller
 {
-    /**
-     * @Route("/register", name="user_register")
-     */
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
-    {
-        // 1) build the form
-        $user = new User();
-        $form = $this->createForm(RegisterType::class, $user);
+    // /**
+    //  * @Route("/register", name="user_register")
+    //  */
+    // public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    // {
+    //     // 1) build the form
+    //     $user = new User();
+    //     $form = $this->createForm(RegisterType::class, $user);
 
-        // 2) handle the submit (will only happen on POST)
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+    //     // 2) handle the submit (will only happen on POST)
+    //     $form->handleRequest($request);
+    //     if ($form->isSubmitted() && $form->isValid()) {
 
-            // 3) Encode the password (you could also do this via Doctrine listener)
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-            $user->setPwd($password);
+    //         // 3) Encode the password (you could also do this via Doctrine listener)
+    //         $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+    //         $user->setPwd($password);
 
-            // 4) save the User!
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+    //         // 4) save the User!
+    //         $em = $this->getDoctrine()->getManager();
+    //         $em->persist($user);
+    //         $em->flush();
 
-            // ... do any other work - like sending them an email, etc
-            // maybe set a "flash" success message for the user
+    //         // ... do any other work - like sending them an email, etc
+    //         // maybe set a "flash" success message for the user
 
-            return $this->redirectToRoute('/app');
-        }
+    //         return $this->redirectToRoute('/app');
+    //     }
 
-        return $this->render(
-            'registration/register.html.twig',
-            array('form' => $form->createView())
-        );
-    }
+    //     return $this->render(
+    //         'registration/register.html.twig',
+    //         array('form' => $form->createView())
+    //     );
+    // }
 }
