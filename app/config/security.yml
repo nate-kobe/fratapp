@@ -2,24 +2,14 @@
 # https://symfony.com/doc/current/security.html
 security:
 
+    encoders:
+        UserBundle\Entity\User: bcrypt
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        database:
+        database_provider:
             entity: 
                 class: UserBundle:User
                 property: email
-        in_memory:
-            memory: 
-                users:
-                    nate:
-                        password: $2y$12$R1bHGvTq.BqpZIH7LwCvWO5WTEwL0GACjuGP.SWpVaaholQNbnM4y
-                        roles: 'ROLE_USER'
-                    jo:
-                        password: $2y$12$P110sLKBIqw2LWoXZ0pWIeyrEbrmdvZ1E2JMAWmhjCaeitRKa4PA6
-                        roles: 'ROLE_USER'
-                    admin:
-                        password: $2y$12$iyJMLjk8EaqDyTucmD82QODXZOlULZbkG0kTm3fLOXmdHXHIU2Tr.
-                        roles: 'ROLE_ADMIN'
                 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -29,22 +19,21 @@ security:
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            # activate different ways to authenticate
+            pattern: ^/
             http_basic: ~
-            provider: database
+            provider: database_provider
+
+            # activate different ways to authenticate
+            pattern: ^/app
+            http_basic: ~
+            provider: database_provider
             
-            logout:
-                path:   /logout
-                target: /
 
             # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+            # form_login: ~
 
     access_control:
         # require ROLE_USER for /app*
-        - { path: ^/secure, roles: ROLE_USER }
-
-    encoders:
-        UserBundle\Entity\User: bcrypt
+        - { path: ^/app, roles: ROLE_USER }

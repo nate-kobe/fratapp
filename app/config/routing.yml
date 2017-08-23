@@ -1,10 +1,14 @@
+app_user:
+    resource: "@AppBundle/Controller/UserController.php"
+    type:     annotation
+
 user:
     resource: "@UserBundle/Controller/"
     type:     annotation
     prefix:   /
 
 app:
-    resource: '@AppBundle/Controller/'
+    resource: '@AppBundle/Controller/DefaultController.php'
     type: annotation
     prefix: /app
 
