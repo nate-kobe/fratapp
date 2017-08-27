@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -51,6 +52,12 @@ class User implements UserInterface, \Serializable
     private $pwd;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPwd;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dtCreated", type="datetimetz")
@@ -61,11 +68,6 @@ class User implements UserInterface, \Serializable
     public function getRoles()
     {
         return array('ROLE_USER');
-    }
-
-    public function getPassword()
-    {
-        return $this->pwd;
     }
 
     public function getSalt()
@@ -223,6 +225,36 @@ class User implements UserInterface, \Serializable
     public function getPwd()
     {
         return $this->pwd;
+    }
+
+    /**
+     * Get pwd
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->getPwd();
+    }
+
+    /**
+     * Get pwd
+     *
+     * @return string
+     */
+    public function setPassword($pwd)
+    {
+        return $this->setPwd($pwd);
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPwd;
+    }
+
+    public function setPlainPassword($pwd)
+    {
+        $this->plainPwd = $pwd;
     }
 
     /**

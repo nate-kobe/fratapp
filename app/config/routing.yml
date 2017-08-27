@@ -1,16 +1,3 @@
-app_user:
-    resource: "@AppBundle/Controller/UserController.php"
-    type:     annotation
-
-user:
-    resource: "@UserBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 app:
-    resource: '@AppBundle/Controller/DefaultController.php'
-    type: annotation
-    prefix: /app
-
-logout:
-    path: /logout
+    resource: "@AppBundle/Controller/"
+    type:     annotation
