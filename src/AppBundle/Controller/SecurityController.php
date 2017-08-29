@@ -10,10 +10,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 /**
  * User controller.
  *
- * @Route("admin/user")
+ * @Route("/")
  */
 class SecurityController extends Controller
 {
@@ -21,16 +23,19 @@ class SecurityController extends Controller
      * Lists all user entities.
      *
      * @Route("/login", name="user_login")
-     * @Method("GET")
      */
-    public function loginAction()
+    public function loginAction(Request $req, AuthenticationUtils $authUtils)
     {
-        $em = $this->getDoctrine()->getManager();
+        // get the login error if there is one
+        $error = $authUtils->getLastAuthenticationError();
 
-        $users = $em->getRepository('AppBundle:User')->findAll();
+        // last username entered by the user
+        $lastUsername = $authUtils->getLastUsername();
+        echo $error;
 
-        return $this->render('user/index.html.twig', array(
-            'users' => $users,
+        return $this->render('security/login.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
         ));
     }
 
