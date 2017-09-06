@@ -35,4 +35,5 @@ security:
 
     access_control:
         # require ROLE_USER for /app*
-        - { path: ^/app, roles: ROLE_USER }
+        # - { path: ^/app, roles: ROLE_USER }
+        # - { path: ^/admin, roles: ROLE_ADMIN }

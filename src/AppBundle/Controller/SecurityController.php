@@ -22,7 +22,7 @@ class SecurityController extends Controller
     /**
      * Lists all user entities.
      *
-     * @Route("/login", name="user_login")
+     * @Route("/login", name="security_login")
      */
     public function loginAction(Request $req, AuthenticationUtils $authUtils)
     {
@@ -40,7 +40,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/register", name="register")
+     * @Route("/register", name="security_register")
      */
     public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder) {
         $user = new User();
@@ -64,5 +64,15 @@ class SecurityController extends Controller
             'security/register.html.twig',
             array('form' => $form->createView())
         );
+    }
+
+    /**
+     * @Route("/reset-pwd", name="security_reset_pwd")
+     */
+    public function resetPwdAction(Request $request) {
+        if ($user = $this->getUser()) {
+            echo $user->getUsername();
+        }
+        $this->redirectToRoute('homepage');
     }
 }
