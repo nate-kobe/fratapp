@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component
 /**
  * User controller.
  *
- * @Route("profile")
+ * @Route("app/profile")
  */
 class UserController extends Controller
 {
@@ -20,8 +20,12 @@ class UserController extends Controller
      * @Route("/", name="user_profile")
      * @Method("GET")
      */
-    public function showAction(Request $request, User $user)
+    public function showAction(Request $request)
     {
+        $user = $this->get('security.token_storage')
+            ->getToken()
+            ->getUser();
+
         $deleteForm = $this->createDeleteForm($user);
 
         return $this->render('user/profile.html.twig', array(
@@ -73,5 +77,21 @@ class UserController extends Controller
         }
 
         return $this->redirectToRoute('admin_user_index');
+    }
+    
+    /**
+     * Creates a form to delete a user entity.
+     *
+     * @param User $user The user entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm(User $user)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('admin_user_delete', array('id' => $user->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
     }
 }
