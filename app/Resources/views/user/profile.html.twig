@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>User</h1>
 
     <table class="table">
         <tbody>
@@ -38,7 +37,7 @@
         </li>
         <li>
             {{ form_start(delete_form) }}
-                <input class="text-danger" type="submit" value="Supprimer"><i class="glyphicon glyphicon-remove"/></input>
+                <input class="text-danger" type="submit" value="Supprimer"></input>
             {{ form_end(delete_form) }}
         </li>
     </ul>
