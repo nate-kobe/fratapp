@@ -36,10 +36,15 @@ security:
             # form_login: ~
 
     access_control:
-        # require ROLE_USER for /app*
         - { path: ^/app, roles: ROLE_USER }
+        - { path: ^/app/sono, roles: ROLE_SONO }
+        - { path: ^/app/message, roles: ROLE_PREACHER }
+        - { path: ^/app/presidence, roles: ROLE_PRESIDENT }
+        - { path: ^/app/design, roles: ROLE_DESIGN }
+        - { path: ^/app/louange, roles: ROLE_WORSHIP }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/sadmin, roles: ROLE_SUPER_ADMIN }
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
+        ROLE_ADMIN:       [ROLE_USER, ROLE_SONO, ROLE_PREACHER, ROLE_PRESIDENT, ROLE_DESIGN, ROLE_WORSHIP]
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
