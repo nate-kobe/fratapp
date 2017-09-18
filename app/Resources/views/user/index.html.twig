@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Users list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Email</th>
+                <th>Pwd</th>
+                <th>Dtcreated</th>
+                <th>Actions</th>
+                <th>ROLES</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td><a href="{{ path('admin_user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
+                <td>{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.pwd }}</td>
+                <td>{{ user.dtCreated|date('Y-m-d') }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_user_show', { 'id': user.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_user_edit', { 'id': user.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>{% for role in user.roles %}
+                        <li>{{ role }}</li>
+                    {% endfor %}</ul>
+                    <a href="{{ path('admin_user_promote', {'userId' : user.id, 'groupId' : 2}) }}">Promote</a>
+                    <a href="{{ path('admin_user_demote', {'userId' : user.id, 'groupId' : 2}) }}">Demote</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_user_new') }}">Create a new user</a>
+        </li>
+    </ul>
+{% endblock %}
