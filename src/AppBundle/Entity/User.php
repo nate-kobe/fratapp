@@ -79,7 +79,9 @@ class User implements UserInterface, \Serializable
     /* UserInterface methods */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        $groups = array_map(function($group){if($group != null) return $group->getRole();}, $this->securityGroups->toArray());
+        $groups[] = 'ROLE_USER';
+        return $groups;
     }
 
     public function getSalt()
@@ -305,6 +307,20 @@ class User implements UserInterface, \Serializable
     public function getDtCreated()
     {
         return $this->dtCreated;
+    }
+
+    /**
+     * WARNING - DO NOT USE : call SecurityGroup->addUser() instead
+     */
+    public function addSecurityGroup(SecurityGroup $sg) {
+        $this->securityGroups->add($sg);
+    }
+
+    /**
+     * WARNING - DO NOT USE : call SecurityGroup->removeUser() instead
+     */
+    public function removeSecurityGroup(SecurityGroup $sg) {
+        $this->securityGroups->removeElement($sg);
     }
 }
 

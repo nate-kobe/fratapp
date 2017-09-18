@@ -2,7 +2,10 @@
 
 namespace AppBundle\Controller;
 
+// Internal app imports
 use AppBundle\Entity\User;
+use AppBundle\Entity\SecurityGroup;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -119,6 +122,57 @@ class AdminUserController extends Controller
         }
 
         return $this->redirectToRoute('admin_user_index');
+    }
+
+
+    /**
+     * Adds a role to a user
+     *
+     * @Route("/{userId}/promote/{groupId}", name="admin_user_promote")
+     * @Method({"GET"})
+     */
+    public function promote(int $userId, int $groupId) {
+
+        // Get group
+        $groupRep = $this->getDoctrine()->getRepository(SecurityGroup::Class);
+        $group = $groupRep->find($groupId);
+
+        // Get user
+        $userRep = $this->getDoctrine()->getRepository(User::Class);
+        $user = $userRep->find($userId);
+
+        $group->addUser($user);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user); $em->persist($group);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_user_index');
+    }
+
+    /**
+     * Adds a role to a user
+     *
+     * @Route("/{userId}/demote/{groupId}", name="admin_user_demote")
+     * @Method({"GET"})
+     */
+    public function demote(int $userId, int $groupId) {
+
+        // Get group
+        $groupRep = $this->getDoctrine()->getRepository(SecurityGroup::Class);
+        $group = $groupRep->find($groupId);
+
+        // Get user
+        $userRep = $this->getDoctrine()->getRepository(User::Class);
+        $user = $userRep->find($userId);
+
+        $group->removeUser($user);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user); $em->persist($group);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_user_index');  
     }
 
     /**

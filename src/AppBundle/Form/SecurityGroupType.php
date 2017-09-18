@@ -13,7 +13,7 @@ class SecurityGroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')->add('role')->add('users');
+        $builder->add('name')->add('role');
     }
     
     /**

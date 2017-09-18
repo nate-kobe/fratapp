@@ -105,8 +105,18 @@ class SecurityGroup extends Role
         return $this->role;
     }
 
+    public function addUser(User $u) {
+        $this->users->add($u);
+        $u->addSecurityGroup($this);
+    }
+
+    public function removeUser(User $u) {
+        $this->users->removeElement($u);
+        $u->removeSecurityGroup($this);
+    }
+
     public function getUsers() {
-        
+        return $this->users;
     }
 }
 
