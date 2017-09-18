@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Securitygroups list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for securityGroup in securityGroups %}
+            <tr>
+                <td><a href="{{ path('sadmin_sec-groups_show', { 'id': securityGroup.id }) }}">{{ securityGroup.id }}</a></td>
+                <td>{{ securityGroup.name }}</td>
+                <td>{{ securityGroup.role }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('sadmin_sec-groups_show', { 'id': securityGroup.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('sadmin_sec-groups_edit', { 'id': securityGroup.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('sadmin_sec-groups_new') }}">Create a new securityGroup</a>
+        </li>
+    </ul>
+{% endblock %}

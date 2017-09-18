@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
@@ -63,6 +64,17 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="dtCreated", type="datetimetz")
      */
     private $dtCreated;
+
+     /**
+     * @ORM\ManyToMany(targetEntity="SecurityGroup", inversedBy="users")
+     *
+     */
+    private $securityGroups;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     /* UserInterface methods */
     public function getRoles()
