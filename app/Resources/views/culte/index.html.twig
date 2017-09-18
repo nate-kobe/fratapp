@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cultes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for culte in cultes %}
+            <tr>
+                <td><a href="{{ path('app_culte_show', { 'id': culte.id }) }}">{{ culte.id }}</a></td>
+                <td>{% if culte.date %}{{ culte.date|date('Y-m-d') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('app_culte_show', { 'id': culte.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_culte_edit', { 'id': culte.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('app_culte_new') }}">Create a new culte</a>
+        </li>
+    </ul>
+{% endblock %}

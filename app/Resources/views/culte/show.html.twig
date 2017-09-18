@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if(culte.banner) %}
+        <img style="max-width: 200px" src="{{ asset('uploads/banners/' ~ culte.banner) }}"/>
+        {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}">edit banner</a>{% endif %}
+    {% else %}
+        {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}">add banner</a>{% endif %}
+    {% endif %}
+    <h1>Culte</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ culte.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if culte.date %}{{ culte.date|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Message </th>
+                <td>{{ culte.preacher }} - {{ culte.sermon }} {% if is_granted('ROLE_PREACHER') %}<a href="{{ path('app_culte_preacher_update', {'id': culte.id}) }}">edit</a>{% endif %}<br/>
+                {% if(culte.presentation) %}<a href="{{ asset('uploads/presentations/' ~ culte.presentation) }}">Download Presentation</a>{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('app_culte_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('app_culte_edit', { 'id': culte.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

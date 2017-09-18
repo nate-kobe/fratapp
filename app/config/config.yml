@@ -8,6 +8,8 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    message_presentation_directory: '%kernel.project_dir%/web/uploads/presentations'
+    message_banner_directory: '%kernel.project_dir%/web/uploads/banners'
 
 framework:
     #esi: ~

@@ -34,34 +34,34 @@ class AdminUserController extends Controller
         ));
     }
 
-    /**
-     * Creates a new user entity.
-     *
-     * @Route("/new", name="admin_user_new")
-     * @Method({"GET", "POST"})
-     */
-    public function newAction(Request $request)
-    {
-        $user = new User();
-        $form = $this->createForm('AppBundle\Form\UserType', $user);
-        $form->handleRequest($request);
+    // /**
+    //  * Creates a new user entity.
+    //  *
+    //  * @Route("/new", name="admin_user_new")
+    //  * @Method({"GET", "POST"})
+    //  */
+    // public function newAction(Request $request)
+    // {
+    //     $user = new User();
+    //     $form = $this->createForm('AppBundle\Form\UserType', $user);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setDtCreated(new \DateTime());
-            $user->setPwd($this->genRandStr());
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $user->setDtCreated(new \DateTime());
+    //         $user->setPwd($this->genRandStr());
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+    //         $em = $this->getDoctrine()->getManager();
+    //         $em->persist($user);
+    //         $em->flush();
 
-            return $this->redirectToRoute('admin_user_show', array('id' => $user->getId()));
-        }
+    //         return $this->redirectToRoute('admin_user_show', array('id' => $user->getId()));
+    //     }
 
-        return $this->render('user/new.html.twig', array(
-            'user' => $user,
-            'form' => $form->createView(),
-        ));
-    }
+    //     return $this->render('user/new.html.twig', array(
+    //         'user' => $user,
+    //         'form' => $form->createView(),
+    //     ));
+    // }
 
     /**
      * Finds and displays a user entity.
