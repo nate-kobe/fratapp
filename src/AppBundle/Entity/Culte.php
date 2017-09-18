@@ -28,6 +28,20 @@ class Culte
      */
     private $date;
 
+    /**
+     * @ORM\Column(name="preacher", type="string", length=50, nullable=true)
+     */
+    private $preacher;
+
+    /**
+     * @ORM\Column(name="sermon", type="string", length=255, nullable=true)
+     */
+    private $sermon;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $presentation;
 
     /**
      * Get id
@@ -62,5 +76,13 @@ class Culte
     {
         return $this->date;
     }
-}
 
+    public function getPreacher() {return $this->preacher;}
+    public function setPreacher($preacher) {$this->preacher = $preacher;}
+
+    public function getSermon() {return $this->sermon;}
+    public function setSermon($sermon) {$this->sermon = $sermon;}
+
+    public function getPresentation() {return $this->presentation;}
+    public function setPresentation($presentation) {$this->presentation = $presentation;}
+}

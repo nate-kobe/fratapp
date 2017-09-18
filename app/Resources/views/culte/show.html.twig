@@ -13,10 +13,18 @@
                 <th>Date</th>
                 <td>{% if culte.date %}{{ culte.date|date('Y-m-d') }}{% endif %}</td>
             </tr>
+            <tr>
+                <th>Message </th>
+                <td>{{ culte.preacher }} - {{ culte.sermon }} {% if is_granted('ROLE_PREACHER') %}<a href="{{ path('app_culte_preacher_update', {'id': culte.id}) }}">edit</a>{% endif %}<br/>
+                {% if(culte.presentation) %}<a href="{{ asset('uploads/presentations/' ~ culte.presentation) }}">Download Presentation</a>{% endif %}</td>
+            </tr>
         </tbody>
     </table>
 
     <ul>
+        {% if is_granted('ROLE_PREACHER') %}
+            <a href="{{ path('app_culte_preacher_update', {'id': culte.id}) }}">Preacher zone</a>
+        {% endif %}
         <li>
             <a href="{{ path('app_culte_index') }}">Back to the list</a>
         </li>

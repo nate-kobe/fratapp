@@ -39,6 +39,9 @@ class CulteController extends Controller
      */
     public function newAction(Request $request)
     {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
         $culte = new Culte();
         $form = $this->createForm('AppBundle\Form\CulteType', $culte);
         $form->handleRequest($request);
@@ -81,6 +84,9 @@ class CulteController extends Controller
      */
     public function editAction(Request $request, Culte $culte)
     {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
         $deleteForm = $this->createDeleteForm($culte);
         $editForm = $this->createForm('AppBundle\Form\CulteType', $culte);
         $editForm->handleRequest($request);
@@ -106,6 +112,9 @@ class CulteController extends Controller
      */
     public function deleteAction(Request $request, Culte $culte)
     {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
         $form = $this->createDeleteForm($culte);
         $form->handleRequest($request);
 
