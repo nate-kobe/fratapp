@@ -1,0 +1,27 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %} Access Denied - {% endblock %}
+{% block body %}
+	<div class="banner">
+		<h1>Access Denied</h1>
+		<p>You can not access this page with your actual privilege, <a href="/login">Log-in</a> ! </p>
+	</div>
+	<br/>
+
+<style>
+	div.banner {
+		background: #937e3b;
+		color: white;
+		width: 100%;
+		text-align: center;
+		max-height: 250px;
+		padding: 1px;
+	}
+	div.banner h1 {
+		color: white;
+		font-weight: 700;
+		font-size: 3em;
+		text-transform: uppercase;
+	}
+{% endblock %}
+	
