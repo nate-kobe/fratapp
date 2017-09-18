@@ -39,9 +39,19 @@ class Culte
     private $sermon;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $presentation;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $banner;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private $sono;
 
     /**
      * Get id
@@ -85,4 +95,10 @@ class Culte
 
     public function getPresentation() {return $this->presentation;}
     public function setPresentation($presentation) {$this->presentation = $presentation;}
+
+    public function getBanner() {return $this->banner;}
+    public function setBanner($banner) {$this->banner = $banner;}
+
+    public function getSono() {return $this->sono;}
+    public function setSono(User $user) {$this->sono = $user;}
 }

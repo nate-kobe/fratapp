@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% if(culte.banner) %}
+        <img style="max-width: 200px" src="{{ asset('uploads/banners/' ~ culte.banner) }}"/>
+        {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}">edit banner</a>{% endif %}
+    {% else %}
+        {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}">add banner</a>{% endif %}
+    {% endif %}
     <h1>Culte</h1>
 
     <table>
@@ -22,9 +28,6 @@
     </table>
 
     <ul>
-        {% if is_granted('ROLE_PREACHER') %}
-            <a href="{{ path('app_culte_preacher_update', {'id': culte.id}) }}">Preacher zone</a>
-        {% endif %}
         <li>
             <a href="{{ path('app_culte_index') }}">Back to the list</a>
         </li>

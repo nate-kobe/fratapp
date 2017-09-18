@@ -9,6 +9,7 @@ imports:
 parameters:
     locale: fr
     message_presentation_directory: '%kernel.project_dir%/web/uploads/presentations'
+    message_banner_directory: '%kernel.project_dir%/web/uploads/banners'
 
 framework:
     #esi: ~

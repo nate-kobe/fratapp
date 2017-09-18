@@ -10,40 +10,40 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * Culte controller for preacher's actions
+ * Culte controller for design actions
  *
- * @Route("app/sermon")
+ * @Route("app/design")
  */
-class SermonController extends Controller
+class DesignController extends Controller
 {
     /**
      * Lists all culte entities.
      *
-     * @Route("/{id}/update", name="app_culte_preacher_update")
+     * @Route("/{id}/update", name="app_culte_design_update")
      * @Method({"GET","POST"})
      */
     public function updateAction(Request $request, Culte $culte)
     {
-        if(!$this->get('security.authorization_checker')->isGranted('ROLE_PREACHER')) {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_DESIGN')) {
             throw $this->createAccessDeniedException();
         }
-        if($culte->getPresentation()) {
-            $culte->setPresentation(new File($this->getParameter('message_presentation_directory').'/'.$culte->getPresentation()));
+        if($culte->getBanner()) {
+            $culte->setBanner(new File($this->getParameter('message_banner_directory').'/'.$culte->getBanner()));
         }
-        $editForm = $this->createForm('AppBundle\Form\SermonType', $culte);
+        $editForm = $this->createForm('AppBundle\Form\DesignType', $culte);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             // $file stores the uploaded file
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-            $file = $culte->getPresentation();
+            $file = $culte->getBanner();
             if($file) {
                 $fileName = md5(uniqid()).'.'.$file->guessExtension();
                 $file->move(
-                    $this->getParameter('message_presentation_directory'),
+                    $this->getParameter('message_banner_directory'),
                     $fileName
                 );
-                $culte->setPresentation($fileName);
+                $culte->setBanner($fileName);
             }
 
             $this->getDoctrine()->getManager()->flush();
@@ -51,7 +51,7 @@ class SermonController extends Controller
             return $this->redirectToRoute('app_culte_show', array('id' => $culte->getId()));
         }
 
-        return $this->render('culte/sermon.html.twig', array(
+        return $this->render('culte/design_edit.html.twig', array(
             'culte' => $culte,
             'edit_form' => $editForm->createView()
         ));

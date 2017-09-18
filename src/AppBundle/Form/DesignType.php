@@ -7,16 +7,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class SermonType extends AbstractType
+class DesignType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('preacher')
-                ->add('sermon')
-                ->add('presentation', FileType::class, array('required' => false));
+        $builder->add('banner', FileType::class);
     }
     
     /**

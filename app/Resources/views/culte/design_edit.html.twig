@@ -1,11 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Sermon edit</h1>
+    <h1>Design edit</h1>
 
     {{ form_start(edit_form) }}
         {{ form_widget(edit_form) }}
-        Attention, si vous ne reuploadez pas le fichier, celui-ci sera supprimé.
         <input type="submit" value="Edit" />
     {{ form_end(edit_form) }}
 {% endblock %}
