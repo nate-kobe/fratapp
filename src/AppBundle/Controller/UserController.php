@@ -57,7 +57,7 @@ class UserController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_user_edit', array('id' => $user->getId()));
+            return $this->redirectToRoute('user_profile_edit', array('id' => $user->getId()));
         }
 
         return $this->render('user/edit.html.twig', array(
