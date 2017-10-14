@@ -1,0 +1,69 @@
+{% extends 'base_user.html.twig' %}
+
+{% block title %}Cultes - {% endblock %}
+{% block body %}
+	
+	<br/>
+	<div class="banner">
+		<h1>Cultes</h1>
+	</div>
+	<br/>
+
+	{% if is_granted("ROLE_ADMIN") %}
+	<div class="container center">
+		<button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> New Culte</button>
+	</div>
+	
+	<br/>
+	{% endif %}
+	
+	
+	<ul class="list-group">
+		<li class="list-group-item">
+			<div class="card text-center" role="button" @click="handleClick()">
+					<div class="card-body">
+					<h4 class="card-title">Dimanche 13 Août</h4>
+					<p class="card-text">
+					<div>
+						Prédication : <b>Nathalie Perrot</b><br/>
+						Louange : <b>Sabrina Etienne et son équipe</b><br/>
+						Présidence : <b>Reynald Pasche</b>
+					</div></p>
+					<a href="#" class="btn btn-primary">Details</a>
+				</div>
+			</div>
+		</li>
+		<br/>
+		<li class="list-group-item">
+			<div class="card text-center" role="button" @click="handleClick()">
+					<div class="card-body">
+					<h4 class="card-title">Dimanche 20 Août</h4>
+					<p class="card-text">
+					<div>
+						Prédication : <b>David Rossé</b><br/>
+						Louange : <b>Sabrina Etienne et son équipe</b><br/>
+						Présidence : <b>Arlette Gallay</b>
+					</div></p>
+					<a href="#" class="btn btn-primary">Details</a>
+				</div>
+			</div>
+		</li>
+	</ul>
+
+<style>
+	div.banner {
+		background: #937e3b;
+		color: white;
+		width: 100%;
+		text-align: center;
+		max-height: 250px;
+		padding: 1px;
+	}
+	div.banner h1 {
+		color: white;
+		font-weight: 700;
+		font-size: 3em;
+		text-transform: uppercase;
+	}
+{% endblock %}
+	

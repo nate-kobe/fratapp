@@ -1,39 +1,58 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 
 {% block body %}
-    <h1>Cultes list</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for culte in cultes %}
-            <tr>
-                <td><a href="{{ path('app_culte_show', { 'id': culte.id }) }}">{{ culte.id }}</a></td>
-                <td>{% if culte.date %}{{ culte.date|date('Y-m-d') }}{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('app_culte_show', { 'id': culte.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_culte_edit', { 'id': culte.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <br/>
+    <div class="banner">
+        <h1>Cultes</h1>
+    </div>
+    <br/>
 
+    {% if is_granted("ROLE_ADMIN") %}
+    <div class="container center text-center">
+        <a class="btn btn-primary btn-lg" href="{{ path('app_culte_new') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter un culte</a>
+    </div>
     <ul>
         <li>
-            <a href="{{ path('app_culte_new') }}">Create a new culte</a>
+            
+
         </li>
     </ul>
+    
+    <br/>
+    {% endif %}
+    
+    <ul class="list-group">{% for culte in cultes %}
+    <li class="list-group-item col-md-4">
+            <div class="card text-center" role="button" @click="handleClick()">
+                    <div class="card-body">
+                    <h4 class="card-title">{% if culte.date %}{{ culte.date|date('l d F') }}{% endif %}</h4>
+                    <p class="card-text">
+                    <div>
+                        Prédication : <b>Nathalie Perrot</b><br/>
+                        Louange : <b>Sabrina Etienne et son équipe</b><br/>
+                        Présidence : <b>Reynald Pasche</b>
+                    </div></p>
+                    <a href="{{ path('app_culte_show', { 'id': culte.id }) }}" class="btn btn-primary">Details</a>
+                </div>
+            </div>
+        </li>
+    {% endfor %}</ul>    
+
+<style>
+    div.banner {
+        background: #937e3b;
+        color: white;
+        width: 100%;
+        text-align: center;
+        max-height: 250px;
+        padding: 1px;
+    }
+    div.banner h1 {
+        color: white;
+        font-weight: 700;
+        font-size: 3em;
+        text-transform: uppercase;
+    }
+    </style>
 {% endblock %}
