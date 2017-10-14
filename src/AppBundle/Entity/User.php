@@ -84,6 +84,11 @@ class User implements UserInterface, \Serializable
         return $groups;
     }
 
+    public function getSecurityGroups()
+    {
+        return $this->securityGroups;
+    }
+
     public function getSalt()
     {
         return null;

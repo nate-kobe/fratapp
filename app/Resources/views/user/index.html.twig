@@ -1,55 +1,70 @@
 {% extends 'base_admin.html.twig' %}
 
-{% block body %}
-    <h1>Users list</h1>
+{% block title %} Utilisateurs - {% endblock %}
 
-    <table>
+{% block body %}
+    <div class="banner">
+        <h1>Utilisateurs</h1>
+    </div>
+
+    <br/>
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
+                <th>Nom</th>
                 <th>Email</th>
-                <th>Pwd</th>
-                <th>Dtcreated</th>
-                <th>Actions</th>
-                <th>ROLES</th>
+                <th>Permissions</th>
+                <th></th>
             </tr>
         </thead>
-        <tbody>
-        {% for user in users %}
+        <tbody>{% for user in users %}
             <tr>
-                <td><a href="{{ path('admin_user_show', { 'id': user.id }) }}">{{ user.id }}</a></td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.pwd }}</td>
-                <td>{{ user.dtCreated|date('Y-m-d') }}</td>
+                <td>{% for group in user.securityGroups %}
+                        <span class="label label-primary">{{ group.name }} <a href="{{ path('admin_user_demote', {'userId' : user.id, 'groupId' : group.id}) }}"><i class="glyphicon glyphicon-remove" style="color: white"> </i></a></span>
+                        {% endfor %}
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('admin_user_show', { 'id': user.id }) }}">show</a>
+                            TODO Reset Password 
                         </li>
                         <li>
-                            <a href="{{ path('admin_user_edit', { 'id': user.id }) }}">edit</a>
+                            <span class="glyphicon glyphicon-user"></span> Promote : <a href="{{ path('admin_user_promote', {'userId' : user.id, 'groupId' : 1}) }}">Louange</a> / 
+                            <a href="{{ path('admin_user_promote', {'userId' : user.id, 'groupId' : 3}) }}">Prédicateur</a> / 
+                            <a href="{{ path('admin_user_promote', {'userId' : user.id, 'groupId' : 4}) }}">Sono</a> / 
                         </li>
                     </ul>
+                    
+                    
                 </td>
+                <!-- Checkboxes ? Or in dropdown maybe ?
                 <td>
-                    <ul>{% for role in user.roles %}
-                        <li>{{ role }}</li>
-                    {% endfor %}</ul>
-                    <a href="{{ path('admin_user_promote', {'userId' : user.id, 'groupId' : 2}) }}">Promote</a>
-                    <a href="{{ path('admin_user_demote', {'userId' : user.id, 'groupId' : 2}) }}">Demote</a>
+                    <div class="checkbox">
+                      <label><input type="checkbox" value="">SUPER_ADMIN</label>
+                    </div>
+                    <div class="checkbox">
+                      <label><input type="checkbox" value="">ADMIN</label>
+                    </div>
                 </td>
+                -->
             </tr>
-        {% endfor %}
-        </tbody>
+        {% endfor %}</tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_user_new') }}">Create a new user</a>
-        </li>
-    </ul>
+    <style>
+    div.banner {
+        background: #937e3b;
+        color: white;
+        width: 100%;
+        text-align: center;
+        max-height: 250px;
+        padding: 1px;
+    }
+    div.banner h1 {
+        color: white;
+        font-weight: 700;
+        font-size: 3em;
+        text-transform: uppercase;
+    }</style>
 {% endblock %}
