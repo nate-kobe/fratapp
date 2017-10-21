@@ -18,6 +18,41 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
+        
+        {% if(culte.banner) %}
+            <style type="text/css">
+                img.culte-img {
+                  max-width: 100%;
+                  position: relative;
+                  top: 30%;
+                    -webkit-transform: translateY(-30%);
+                    -ms-transform: translateY(-30%);
+                    transform: translateY(-30%);
+                }
+
+                .hero-img {
+                  max-width: 100%;
+                  max-width: 800px;
+                  margin: auto;
+                  overflow: hidden;
+                }
+
+                .hero-img::after {
+                  display: block;
+                  position: relative;
+                  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0, #fff 100%);
+                  margin-top: -500px;
+                  height: 250px;
+                  width: 100%;
+                  content: '';
+                }
+            </style>
+            {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>{% endif %}
+            <div class="hero-img"><img class="culte-img" src="{{ asset('uploads/banners/' ~ culte.banner) }}"/></div>
+        {% else %}
+            {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}"><span class="glyphicon glyphicon-picture"></span> Ajouter une image</a>{% endif %}
+        {% endif %}
+
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingOne">
@@ -105,33 +140,8 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-    {% if(culte.banner) %}
-        <img style="max-width: 200px" src="{{ asset('uploads/banners/' ~ culte.banner) }}"/>
-        {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}">edit banner</a>{% endif %}
-    {% else %}
-        {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}">add banner</a>{% endif %}
-    {% endif %}
-    <h1>Culte</h1>
-
-    <table>
+ <table>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ culte.id }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{% if culte.date %}{{ culte.date|date('Y-m-d') }}{% endif %}</td>
-            </tr>
             <tr>
                 <th>Message </th>
                 <td>{{ culte.preacher }} - {{ culte.sermon }} {% if is_granted('ROLE_PREACHER') %}<a href="{{ path('app_culte_preacher_update', {'id': culte.id}) }}">edit</a>{% endif %}<br/>
