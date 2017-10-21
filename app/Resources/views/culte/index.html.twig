@@ -1,8 +1,6 @@
 {% extends 'base_user.html.twig' %}
 
 {% block body %}
-
-    <br/>
     <div class="banner">
         <h1>Cultes</h1>
     </div>
@@ -12,12 +10,6 @@
     <div class="container center text-center">
         <a class="btn btn-primary btn-lg" href="{{ path('app_culte_new') }}"><span class="glyphicon glyphicon-plus"></span> Ajouter un culte</a>
     </div>
-    <ul>
-        <li>
-            
-
-        </li>
-    </ul>
     
     <br/>
     {% endif %}
@@ -29,7 +21,7 @@
                     <h4 class="card-title">{% if culte.date %}{{ culte.date|date('l d F') }}{% endif %}</h4>
                     <p class="card-text">
                     <div>
-                        Prédication : <b>Nathalie Perrot</b><br/>
+                        {% if culte.preacher %}Prédication : <b>{{ culte.preacher }}</b><br/>{% endif %}
                         Louange : <b>Sabrina Etienne et son équipe</b><br/>
                         Présidence : <b>Reynald Pasche</b>
                     </div></p>
@@ -37,22 +29,5 @@
                 </div>
             </div>
         </li>
-    {% endfor %}</ul>    
-
-<style>
-    div.banner {
-        background: #937e3b;
-        color: white;
-        width: 100%;
-        text-align: center;
-        max-height: 250px;
-        padding: 1px;
-    }
-    div.banner h1 {
-        color: white;
-        font-weight: 700;
-        font-size: 3em;
-        text-transform: uppercase;
-    }
-    </style>
+    {% endfor %}</ul>
 {% endblock %}

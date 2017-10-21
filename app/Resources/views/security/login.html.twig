@@ -4,15 +4,15 @@
 
 {% block body %}
 
-
-{% if error %}
-    <div>{{ error.message }}</div>
-{% endif %}
 <div class="text-center">
 <br/>
 <br/>
 <img style="max-height: 100%" src="{{ asset('img/logo-text.png') }}" alt="La Fraternelle"/>
-<h1 class="page-header">Connexion</h1>
+
+<br/><br/>
+{% if error %}
+    <div class="alert alert-danger" role="alert">{{ error.message }}</div>
+{% endif %}
 <form action="{{ path('security_login') }}" method="post">
     <label for="_username">Email:</label>
     <input type="email" id="_username" name="_username" value="{{ last_username }}" />

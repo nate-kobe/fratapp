@@ -1,6 +1,119 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 
 {% block body %}
+    <div class="banner">
+        <h1>{{ culte.date|date('l d F') }}</h1>
+    </div>
+    <br/>
+
+    <div class="container">
+    {% if is_granted("ROLE_ADMIN") %}
+        <div class="container">
+            <button type="button" class="btn btn-danger btn-sm pull-right"><span class="glyphicon glyphicon-trash"></span> Remove</button>
+        </div>
+        <br/>
+    {% endif %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Plan du culte
+        </a>
+        {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_PRESIDENT") %} #}
+            <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+        {# {% endif %} #}
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Louange
+        </a>
+        {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_LOUANGE") %} #}
+            <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+        {# {% endif %} #}
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Annonces
+        </a>
+        {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_PRESIDENT") %} #}
+            <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+        {# {% endif %} #}
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+      </div>
+    </div>
+  </div>
+</div>
+                    </div>
+    <div class="col-md-4">
+        <div>
+            Prédication : <b>Nathalie Perrot</b>
+            {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_PREACHER") %} #}
+                <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+            {# {% endif %} #}
+            <br/>
+            Louange : <b>Sabrina Etienne et son équipe</b>
+            {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_LOUANGE") %} #}
+                <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+            {# {% endif %} #}
+
+            <br/>
+            Présidence : <b>Reynald Pasche</b>
+            {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_PRESIDENT") %} #}
+                <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+            {# {% endif %} #}
+            <br/>
+            Sono : {% if culte.sono %}<b>{{ culte.sono.firstName }} {{ culte.sono.lastName }}</b>{% endif %}
+            {% if is_granted("ROLE_SONO") %}
+                <a href="{{ path('app_culteedit_sono', {'id': culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+            {% endif %}
+        </div>
+        <h5 class="page-header">Structure du culte</h5>
+        <ul>
+            <li>Accueil</li>
+            <li>Louange</li>
+            <li>Sainte-Cène</li>
+        </ul>
+    </div><!-- Right sidebar -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
     {% if(culte.banner) %}
         <img style="max-width: 200px" src="{{ asset('uploads/banners/' ~ culte.banner) }}"/>
         {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}">edit banner</a>{% endif %}
@@ -40,4 +153,5 @@
             {{ form_end(delete_form) }}
         </li>
     </ul>
+    </div>
 {% endblock %}

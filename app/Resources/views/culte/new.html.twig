@@ -1,16 +1,16 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 
 {% block body %}
-    <h1>Culte creation</h1>
+    <div class="banner">
+        <h1>Nouveau culte</h1>
+    </div>
+    <br/>
 
+    <div class="text-center">
     {{ form_start(form) }}
         {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+        <br/>
+        <input type="submit" class="btn btn-primary" value="Create" />
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('app_culte_index') }}">Back to the list</a>
-        </li>
-    </ul>
+    </div>
 {% endblock %}

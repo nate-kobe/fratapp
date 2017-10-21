@@ -13,6 +13,20 @@
             body { 
                 padding-top: 65px; 
             }
+            div.banner {
+                background: #937e3b;
+                color: white;
+                width: 100%;
+                text-align: center;
+                max-height: 250px;
+                padding: 1px;
+            }
+            div.banner h1 {
+                color: white;
+                font-weight: 700;
+                font-size: 3em;
+                text-transform: uppercase;
+            }
         </style>
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -28,23 +42,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </button>
-                  <a class="navbar-brand" href="#"><img style="max-height: 100%" src="{{ asset('img/logo-text.png') }}" alt="La Fraternelle"/></a>
+                  <a class="navbar-brand" href="{{ path('app_culte_index') }}"><img style="max-height: 100%" src="{{ asset('img/logo-text.png') }}" alt="La Fraternelle"/></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                   <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><i class="glyphicon glyphicon-home"></i></a></li>
-                    {% if is_granted('ROLE_USER') %}
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> <span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Paramètres</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Déconnexion</a></li>
-                      </ul>
-                    </li>
+                    <li><a href="{{ path('user_profile') }}"><i class="glyphicon glyphicon-user"> </i></a></li>
+                    <li><a href="{{ path('security_logout') }}"><i class="glyphicon glyphicon-log-out"> </i></a></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('admin_user_index') }}"><i class="glyphicon glyphicon-cog"> </i></a></li>
                     {% endif %}
                   </ul>
                 </div><!-- /.navbar-collapse -->
