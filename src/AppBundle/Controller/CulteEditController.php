@@ -47,6 +47,35 @@ class CulteEditController extends Controller
     /**
      * Lists all culte entities.
      *
+     * @Route("/{id}/band/edit", name="app_culteedit_band")
+     * @Method({"GET", "POST"})
+     */
+    public function editBandAction(Request $request, Culte $culte)
+    {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_WORSHIP')) {
+            throw $this->createAccessDeniedException();
+        }
+        $doctrine = $this->getDoctrine();
+        $userGroup = $doctrine->getRepository(SecurityGroup::class)->findOneByRole('ROLE_WORSHIP');
+
+        $editForm = $this->createForm('AppBundle\Form\CulteBandType', $culte, array('user_group' => $userGroup));
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('app_culte_show', array('id' => $culte->getId()));
+        }
+
+        return $this->render('culte/sono.html.twig', array(
+            'culte' => $culte,
+            'edit_form' => $editForm->createView()
+        ));
+    }
+
+    /**
+     * Lists all culte entities.
+     *
      * @Route("/{id}/img/edit", name="app_culteedit_img")
      * @Method({"GET", "POST"})
      */
@@ -79,6 +108,34 @@ class CulteEditController extends Controller
         }
 
         return $this->render('culte/design_edit.html.twig', array(
+            'culte' => $culte,
+            'edit_form' => $editForm->createView()
+        ));
+    }
+
+    /**
+     * Lists all culte entities.
+     *
+     * @Route("/{id}/president/edit", name="app_culteedit_president")
+     * @Method({"GET", "POST"})
+     */
+    public function editPresidentAction(Request $request, Culte $culte)
+    {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_PRESIDENT')) {
+            throw $this->createAccessDeniedException();
+        }
+        $doctrine = $this->getDoctrine();
+
+        $editForm = $this->createForm('AppBundle\Form\CultePresidentType', $culte);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('app_culte_show', array('id' => $culte->getId()));
+        }
+
+        return $this->render('culte/sono.html.twig', array(
             'culte' => $culte,
             'edit_form' => $editForm->createView()
         ));

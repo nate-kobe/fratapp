@@ -37,11 +37,6 @@ security:
 
     access_control:
         - { path: ^/app, roles: ROLE_USER }
-        - { path: ^/app/sono, roles: ROLE_SONO }
-        - { path: ^/app/message, roles: ROLE_PREACHER }
-        - { path: ^/app/presidence, roles: ROLE_PRESIDENT }
-        - { path: ^/app/design, roles: ROLE_DESIGN }
-        - { path: ^/app/louange, roles: ROLE_WORSHIP }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/sadmin, roles: ROLE_SUPER_ADMIN }
 

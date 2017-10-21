@@ -54,6 +54,21 @@ class Culte
     private $sono;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private $band;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $structure;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $stScene;
+
+    /**
      * Get id
      *
      * @return int
@@ -101,4 +116,13 @@ class Culte
 
     public function getSono() {return $this->sono;}
     public function setSono(User $user) {$this->sono = $user;}
+
+    public function getStructure() {return $this->structure;}
+    public function setStructure($str) {$this->structure = $str;}
+
+    public function getStScene() {return $this->stScene;}
+    public function setStScene($scene) {$this->stScene = $scene;}
+
+    public function getBand() {return $this->band;}
+    public function setBand($band) {$this->band = $band;}
 }

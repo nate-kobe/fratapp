@@ -109,14 +109,14 @@
                     </div>
     <div class="col-md-4">
         <div>
-            Prédication : <b>Nathalie Perrot</b>
+            Prédication : <b>{{ culte.preacher }}</b>
             {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_PREACHER") %} #}
                 <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
             {# {% endif %} #}
             <br/>
             Louange : <b>Sabrina Etienne et son équipe</b>
-            {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_LOUANGE") %} #}
-                <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+            {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_WORSHIP") %} #}
+                <a href="{{ path('app_culteedit_band', {'id' : culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
             {# {% endif %} #}
 
             <br/>
@@ -130,12 +130,11 @@
                 <a href="{{ path('app_culteedit_sono', {'id': culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
             {% endif %}
         </div>
-        <h5 class="page-header">Structure du culte</h5>
-        <ul>
-            <li>Accueil</li>
-            <li>Louange</li>
-            <li>Sainte-Cène</li>
-        </ul>
+        <h5 class="page-header">Structure du culte{% if is_granted("ROLE_SONO") %}
+                <a href="{{ path('app_culteedit_president', {'id': culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+            {% endif %}</h5>
+        {{ culte.structure }}
+
     </div><!-- Right sidebar -->
 </div>
 
