@@ -22,7 +22,7 @@
                     <p class="card-text">
                     <div>
                         {% if culte.preacher %}Prédication : <b>{{ culte.preacher }}</b><br/>{% endif %}
-                        Louange : <b>Sabrina Etienne et son équipe</b><br/>
+                        Louange : <b>{% if culte.band %}{{ culte.band.firstName }} {{ culte.band.lastName }}{% endif %} et son équipe</b><br/>
                         Présidence : <b>Reynald Pasche</b>
                     </div></p>
                     <a href="{{ path('app_culte_show', { 'id': culte.id }) }}" class="btn btn-primary">Details</a>

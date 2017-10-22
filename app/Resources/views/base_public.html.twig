@@ -10,7 +10,11 @@
 
         <!-- For quick and easy CSS -->
         <style type="text/css">
-            
+        .copyright {
+            color: #888;
+            text-align: center;
+            font-size: 0.8em;
+        }
         </style>
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
@@ -19,6 +23,8 @@
         <div class="wrapper"><div class="container">
         {% block body %}{% endblock %}
         </div>
+        <br/><br/>
+        <div class="copyright">Frat'app version 0.1.8 - © Nathan Köbe 2017</div>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

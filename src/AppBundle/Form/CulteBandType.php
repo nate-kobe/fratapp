@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class CulteBandType extends AbstractType
 {
@@ -20,12 +21,8 @@ class CulteBandType extends AbstractType
 
             // use the User.username property as the visible option string
             'choices' => $options['user_group']->getUsers(),
-            'choice_label' => 'firstName',
-
-            // used to render a select box, check boxes or radios
-            // 'multiple' => true,
-            // 'expanded' => true,
-        ));
+            'choice_label' => 'firstName'))
+            ->add('bandRehearsal', TimeType::class);
     }
     
     /**

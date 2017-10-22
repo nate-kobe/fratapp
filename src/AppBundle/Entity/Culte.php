@@ -59,7 +59,17 @@ class Culte
     private $band;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="time")
+     */
+    private $bandRehearsal;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private $president;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
      */
     private $structure;
 
@@ -67,6 +77,11 @@ class Culte
      * @ORM\Column(type="boolean")
      */
     private $stScene;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $infos;
 
     /**
      * Get id
@@ -105,6 +120,9 @@ class Culte
     public function getPreacher() {return $this->preacher;}
     public function setPreacher($preacher) {$this->preacher = $preacher;}
 
+    public function getPresident() {return $this->president;}
+    public function setPresident($president) {$this->president = $president;}
+
     public function getSermon() {return $this->sermon;}
     public function setSermon($sermon) {$this->sermon = $sermon;}
 
@@ -125,4 +143,10 @@ class Culte
 
     public function getBand() {return $this->band;}
     public function setBand($band) {$this->band = $band;}
+
+    public function getInfos() {return $this->infos;}
+    public function setInfos($infos) {$this->infos = $infos;}
+
+    public function getBandRehearsal() {return $this->bandRehearsal;}
+    public function setBandRehearsal($bandRehearsal) {$this->bandRehearsal = $bandRehearsal;}
 }

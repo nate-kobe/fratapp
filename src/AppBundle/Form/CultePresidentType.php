@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CultePresidentType extends AbstractType
 {
@@ -17,9 +18,14 @@ class CultePresidentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('preacher', TextType::class, array('label' => 'Prédicateur(se) '))
-                ->add('sermon', TextType::class, array('label' => 'Prédication '))
-                ->add('structure', TextareaType::class)
+        $builder->add('president', EntityType::class, array(
+                    'class' => 'AppBundle:User',
+                    'choices' => $options['user_group']->getUsers(),
+                    'choice_label' => 'firstName'))
+                ->add('preacher', TextType::class, array('label' => 'Prédicateur(se) '), array('required' => false))
+                ->add('sermon', TextType::class, array('label' => 'Prédication '), array('required' => false))
+                ->add('structure', TextareaType::class, array('required' => false))
+                ->add('infos', TextareaType::class, array('required' => false))
                 ->add('stScene', CheckboxType::class, array('label' => 'Sainte-cène', 'required' => false));
     }
     
@@ -30,7 +36,7 @@ class CultePresidentType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Culte',
-            'sono_group' => null,
+            'user_group' => null,
         ));
     }
 

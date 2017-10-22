@@ -125,8 +125,9 @@ class CulteEditController extends Controller
             throw $this->createAccessDeniedException();
         }
         $doctrine = $this->getDoctrine();
+        $userGroup = $doctrine->getRepository(SecurityGroup::class)->findOneByRole('ROLE_PRESIDENT');
 
-        $editForm = $this->createForm('AppBundle\Form\CultePresidentType', $culte);
+        $editForm = $this->createForm('AppBundle\Form\CultePresidentType', $culte, array('user_group' => $userGroup));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

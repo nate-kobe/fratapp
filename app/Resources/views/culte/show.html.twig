@@ -54,24 +54,66 @@
         {% endif %}
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+  {% if culte.infos %}
   <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingOne">
+    <div class="panel-heading" role="tab" id="headingInfos">
       <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Plan du culte
+        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseInfos" aria-expanded="true" aria-controls="collapseInfos">
+          Informations
         </a>
-        {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_PRESIDENT") %} #}
-            <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
-        {# {% endif %} #}
+        {% if is_granted("ROLE_PRESIDENT") %}
+            <a href="{{ path('app_culteedit_president', { 'id' : culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+        {% endif %}
       </h4>
     </div>
-    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+    <div id="collapseInfos" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfos">
       <div class="panel-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        {{ culte.infos | raw }}
+        <br/><b>Sainte-cène</b> : {% if culte.stScene %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
       </div>
     </div>
   </div>
+  {% endif %}
+
   <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingMessage">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseMessage" aria-expanded="true" aria-controls="collapseMessage">
+          Prédication
+        </a>
+        {% if is_granted("ROLE_PREACHER") %}
+            <a href="{{ path('app_culte_preacher_update', { 'id' : culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+        {% endif %}
+      </h4>
+    </div>
+    <div id="collapseMessage" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMessage">
+      <div class="panel-body">
+        Prédication : <b>{{ culte.sermon }}</b> par {{ culte.preacher }}<br/><br/>
+                {% if(culte.presentation) %}<a class="btn btn-primary btn-small" href="{{ asset('uploads/presentations/' ~ culte.presentation) }}"><span class="glyphicon glyphicon-save"></span> Présentation</a>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingBand">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseBand" aria-expanded="true" aria-controls="collapseBand">
+          Louange
+        </a>
+        {% if is_granted("ROLE_WORSHIP") %}
+            <a href="{{ path('app_culteedit_band', { 'id' : culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+        {% endif %}
+      </h4>
+    </div>
+    <div id="collapseBand" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBand">
+      <div class="panel-body">
+        Dimanche matin : {{ culte.bandRehearsal |date('G\\hm')}}
+      </div>
+    </div>
+  </div>
+
+  <!--<div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingTwo">
       <h4 class="panel-title">
         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -88,7 +130,7 @@
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
+  <div class="panel panel-default">¨
     <div class="panel-heading" role="tab" id="headingThree">
       <h4 class="panel-title">
         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -104,26 +146,26 @@
         Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
       </div>
     </div>
-  </div>
+  </div>-->
 </div>
                     </div>
     <div class="col-md-4">
         <div>
             Prédication : <b>{{ culte.preacher }}</b>
-            {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_PREACHER") %} #}
-                <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
-            {# {% endif %} #}
+            {% if is_granted("ROLE_PREACHER") %}
+                <a href="{{ path('app_culte_preacher_update', {'id': culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+            {% endif %}
             <br/>
-            Louange : <b>Sabrina Etienne et son équipe</b>
-            {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_WORSHIP") %} #}
+            Louange : <b>{{ culte.band.firstName }} {{ culte.band.lastName }} et son équipe</b>
+            {% if is_granted("ROLE_WORSHIP") %}
                 <a href="{{ path('app_culteedit_band', {'id' : culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
-            {# {% endif %} #}
+            {% endif %}
 
             <br/>
-            Présidence : <b>Reynald Pasche</b>
-            {# {% if is_granted("ROLE_ADMIN") || is_granted("ROLE_PRESIDENT") %} #}
-                <a href="#" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
-            {# {% endif %} #}
+            Présidence : <b>{{ culte.president.firstName }} {{ culte.president.lastName }}</b>
+            {% if is_granted("ROLE_PRESIDENT") %}
+                <a href="{{ path('app_culteedit_president', { 'id' : culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+            {% endif %}
             <br/>
             Sono : {% if culte.sono %}<b>{{ culte.sono.firstName }} {{ culte.sono.lastName }}</b>{% endif %}
             {% if is_granted("ROLE_SONO") %}
@@ -131,36 +173,10 @@
             {% endif %}
         </div>
         <h5 class="page-header">Structure du culte{% if is_granted("ROLE_SONO") %}
-                <a href="{{ path('app_culteedit_president', {'id': culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
             {% endif %}</h5>
-        {{ culte.structure }}
+        {{ culte.structure | raw }}
 
     </div><!-- Right sidebar -->
 </div>
 
-
- <table>
-        <tbody>
-            <tr>
-                <th>Message </th>
-                <td>{{ culte.preacher }} - {{ culte.sermon }} {% if is_granted('ROLE_PREACHER') %}<a href="{{ path('app_culte_preacher_update', {'id': culte.id}) }}">edit</a>{% endif %}<br/>
-                {% if(culte.presentation) %}<a href="{{ asset('uploads/presentations/' ~ culte.presentation) }}">Download Presentation</a>{% endif %}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('app_culte_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('app_culte_edit', { 'id': culte.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-    </div>
 {% endblock %}
