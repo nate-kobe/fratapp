@@ -22,6 +22,23 @@
             {{ form_errors(edit_form.bandRehearsal) }}
             {{ form_widget(edit_form.bandRehearsal) }}
             <br/><br/>
+
+            <!-- Songs -->
+            <b>{{ form_label(edit_form.songs) }}</b>
+
+            <ul id="song-fields-list"
+                data-prototype="{{ form_widget(edit_form.songs.vars.prototype)|e }}">
+                {% for field in edit_form.songs %}
+                    <li>
+                        {{ form_errors(field) }}
+                        {{ form_widget(field) }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <a href="#" id="add-another-song"><span class="glyphicon glyphicon-plus"></span> Ajouter un cĥant</a>
+            <!-- End of songs --><br/><br/>
+
             <b>{{ form_label(edit_form.worshipStructure)}}</b>
             <div class="row">
             <div class="col-md-8">
@@ -54,14 +71,12 @@ R (2x)
             {{ form_widget(edit_form.worshipStructure) }}
             <br/><br/>
 
-            <b>{{ form_label(edit_form.instruments) }}</b>
-            {% for instrument in culte.instrumentsStr %}
-                <button class="btn btn-small btn-primary">{{ instrument }}</button>
-            {% endfor %}
+            <!-- Instruments -->
+            <b>{{ form_label(edit_form.instrumentsStr) }}</b>
 
             <ul id="email-fields-list"
-                data-prototype="{{ form_widget(edit_form.instruments.vars.prototype)|e }}">
-                {% for field in edit_form.instruments %}
+                data-prototype="{{ form_widget(edit_form.instrumentsStr.vars.prototype)|e }}">
+                {% for field in edit_form.instrumentsStr %}
                     <li>
                         {{ form_errors(field) }}
                         {{ form_widget(field) }}
@@ -71,6 +86,7 @@ R (2x)
 
             <a href="#" id="add-another-email"><span class="glyphicon glyphicon-plus"></span> </a>
             
+
             <br/><br/>
             <div class="text-center">
                 <a href="{{ path('app_culte_show', {'id': culte.id}) }}" class="btn btn-large">Retour</a>
@@ -84,7 +100,8 @@ R (2x)
 {% block javascripts %}
 <script type="text/javascript">
     // keep track of how many email fields have been rendered
-    var emailCount = '{{ edit_form.instruments|length }}';
+    var emailCount = '{{ edit_form.instrumentsStr|length }}';
+    var songCount = '{{ edit_form.songs|length }}';
 
     jQuery(document).ready(function() {
         console.log(jQuery('#email-fields-list'));
@@ -105,6 +122,25 @@ R (2x)
             // create a new list element and add it to the list
             var newLi = jQuery('<li></li>').html(newWidget);
             newLi.appendTo(emailList);
+        });
+
+        jQuery('#add-another-song').click(function(e) {
+            e.preventDefault();
+
+            var songList = jQuery('#song-fields-list');
+
+            // grab the prototype template
+            var newWidget = songList.attr('data-prototype');
+            console.log(newWidget);
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your emails
+            // end name attribute looks like name="contact[emails][2]"
+            newWidget = newWidget.replace(/__name__/g, songCount);
+            songCount++;
+
+            // create a new list element and add it to the list
+            var newLi = jQuery('<li></li>').html(newWidget);
+            newLi.appendTo(songList);
         });
     })
 </script>

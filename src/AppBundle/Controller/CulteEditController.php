@@ -4,7 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Culte;
 use AppBundle\Entity\SecurityGroup;
+use AppBundle\Entity\Instrument;
 use AppBundle\Entity\UploadedFileDesignCulte;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -60,21 +62,18 @@ class CulteEditController extends Controller
 
         $doctrine = $this->getDoctrine();
         $userGroup = $doctrine->getRepository(SecurityGroup::class)->findOneByRole('ROLE_WORSHIP');
+        $instruments = $doctrine->getRepository(Instrument::class)->findAll();
 
-        $editForm = $this->createForm('AppBundle\Form\CulteBandType', $culte, array('user_group' => $userGroup));
+        $editForm = $this->createForm('AppBundle\Form\CulteBandType', $culte, array('user_group' => $userGroup, 'instruments' => $instruments));
         $editForm->handleRequest($request);
 
-        var_dump("Edit band");
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            foreach ($culte->getInstruments() as $instrument) {
-                $culte->addInstrumentsStr($instrument->getName());
-            }
+            $culte->instrumentsToString();
 
-            var_dump($culte->getInstruments()[0]->getName());
             $em = $this->getDoctrine()->getManager();
             $em->persist($culte);
             $em->flush();
-
+            var_dump($culte->getInstrumentsStr());
             //
             return $this->render('culte/band.html.twig', array(
                 'culte' => $culte,
@@ -83,7 +82,6 @@ class CulteEditController extends Controller
 
             //return $this->redirectToRoute('app_culte_show', array('id' => $culte->getId()));
         }
-        var_dump("Edit band not done");
         return $this->render('culte/band.html.twig', array(
             'culte' => $culte,
             'edit_form' => $editForm->createView()
@@ -217,6 +215,7 @@ class CulteEditController extends Controller
         }
         $doctrine = $this->getDoctrine();
         $userGroup = $doctrine->getRepository(SecurityGroup::class)->findOneByRole('ROLE_PRESIDENT');
+        var_dump($instruments);
 
         $editForm = $this->createForm('AppBundle\Form\CultePresidentType', $culte, array('user_group' => $userGroup));
         $editForm->handleRequest($request);

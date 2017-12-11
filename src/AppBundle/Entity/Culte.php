@@ -184,7 +184,14 @@ class Culte
     public function addInstruments($i) {$this->instruments[] = $i; $i->addCultes($this);}
 
     public function getInstrumentsStr() {return $this->instrumentsStr;}
+    public function setInstrumentsStr($i) {$this->instrumentsStr = $i;}
     public function addInstrumentsStr($istr) {return $this->instrumentsStr[] = $istr;}
+
+    public function instrumentsToString() {
+        for ($i=0; $i < count($this->instrumentsStr); $i++) { 
+            $this->instrumentsStr[$i] = $this->instrumentsStr[$i]->getName();
+        }
+    }
 
     public function getWorshipStructure() {return $this->worshipStructure;}
     public function setWorshipStructure($ws) {$this->worshipStructure = $ws;}
