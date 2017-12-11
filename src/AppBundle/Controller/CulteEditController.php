@@ -4,9 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Culte;
 use AppBundle\Entity\SecurityGroup;
+use AppBundle\Entity\UploadedFileDesignCulte;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Culte Edit controller.
@@ -55,22 +57,101 @@ class CulteEditController extends Controller
         if(!$this->get('security.authorization_checker')->isGranted('ROLE_WORSHIP')) {
             throw $this->createAccessDeniedException();
         }
+
         $doctrine = $this->getDoctrine();
         $userGroup = $doctrine->getRepository(SecurityGroup::class)->findOneByRole('ROLE_WORSHIP');
 
         $editForm = $this->createForm('AppBundle\Form\CulteBandType', $culte, array('user_group' => $userGroup));
         $editForm->handleRequest($request);
 
+        var_dump("Edit band");
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            foreach ($culte->getInstruments() as $instrument) {
+                $culte->addInstrumentsStr($instrument->getName());
+            }
+
+            var_dump($culte->getInstruments()[0]->getName());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($culte);
+            $em->flush();
+
+            //
+            return $this->render('culte/band.html.twig', array(
+                'culte' => $culte,
+                'edit_form' => $editForm->createView()
+            ));
+
+            //return $this->redirectToRoute('app_culte_show', array('id' => $culte->getId()));
+        }
+        var_dump("Edit band not done");
+        return $this->render('culte/band.html.twig', array(
+            'culte' => $culte,
+            'edit_form' => $editForm->createView()
+        ));
+    }
+
+    /**
+     * Display and process form for adding new image to culte
+     *
+     * @Route("/{id}/img/add", name="app_culteedit_addimg")
+     * @Method({"GET", "POST"})
+     */
+    public function addImageAction(Request $request, Culte $culte) {
+        if(!$this->get('security.authorization_checker')->isGranted('ROLE_DESIGN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $fileEntity = new UploadedFileDesignCulte();
+        $fileEntity->setCulte($culte);
+
+        $form = $this->createForm('AppBundle\Form\UploadedFileDesignCulteType', $fileEntity);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $file = $fileEntity->getFile();
+            if($file) {
+                $path = $this->getParameter('message_banner_directory');
+                $filename = md5(uniqid()).'.'.$file->guessExtension();
+
+                $fileEntity->setFiletype($file->getMimeType());
+                $fileEntity->setFilename($filename);
+                $fileEntity->setPath($path);
+                $file->move(
+                    $path,
+                    $filename
+                );
+            }
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($fileEntity);
+            $em->flush();
 
             return $this->redirectToRoute('app_culte_show', array('id' => $culte->getId()));
         }
 
-        return $this->render('culte/sono.html.twig', array(
+        return $this->render('culte/design_edit.html.twig', array(
             'culte' => $culte,
-            'edit_form' => $editForm->createView()
+            'edit_form' => $form->createView()
         ));
+    }
+
+    /**
+     * Remove an image
+     *
+     * @Route("/{id}/img/{imgId}/remove", name="app_culteedit_rmimg")
+     * @Method({"GET"})
+     */
+    public function removeImageAction(Request $request, Culte $culte, $imgId) {
+        $em = $this->getDoctrine()->getManager();
+        $fileEntity = $em->getRepository('AppBundle:UploadedFileDesignCulte')->find($imgId);
+
+        if (!$fileEntity) {
+            throw $this->createNotFoundException('File not found');
+        }
+
+        $em->remove($fileEntity);
+        $em->flush();
+
+        return $this->redirectToRoute('app_culte_show', array('id' => $culte->getId()));
     }
 
     /**
@@ -100,6 +181,16 @@ class CulteEditController extends Controller
                     $fileName
                 );
                 $culte->setBanner($fileName);
+            }
+
+            $file = $culte->getBanner2();
+            if($file) {
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('message_banner_directory'),
+                    $fileName
+                );
+                $culte->setBanner2($fileName);
             }
 
             $this->getDoctrine()->getManager()->flush();

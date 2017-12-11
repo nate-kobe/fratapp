@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 // Internal app imports
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserInvite;
 use AppBundle\Entity\SecurityGroup;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,6 +32,46 @@ class AdminUserController extends Controller
 
         return $this->render('user/index.html.twig', array(
             'users' => $users,
+        ));
+    }
+    
+    /**
+     * Creates a new user entity.
+     *
+     * @Route("/invite", name="admin_user_invite")
+     * @Method({"GET", "POST"})
+     */
+    public function inviteAction(Request $request)
+    {
+        $currentUser = $this->get('security.token_storage')
+            ->getToken()
+            ->getUser();
+        $invite = new UserInvite();
+
+        $form = $this->createForm('AppBundle\Form\UserInviteType', $invite);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $invite->setInviter($currentUser);
+            $invite->setDtCreated(new \DateTime());
+            $invite->setCode($this->genRandStr());
+            $user = new User();
+            $user->setDtCreated(new \DateTime());
+            $user->setEmail($invite->getEmail());
+            $user->setPwd($this->genRandStr());
+            $user->setState(0);
+            $invite->setUser($user);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->persist($invite);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_user_index');
+        }
+
+        return $this->render('user/invite.html.twig', array(
+            'form' => $form->createView(),
         ));
     }
 

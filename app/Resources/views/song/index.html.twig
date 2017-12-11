@@ -1,0 +1,32 @@
+{% extends 'base_user.html.twig' %}
+
+{% block body %}
+    <h1>Songs list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Reference</th>
+                <th>Title</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for song in songs %}
+            <tr>
+                <td><a href="{{ path('sadmin_song_show', { 'id': song.id }) }}">{{ song.reference }}</a></td>
+                <td>{{ song.title }}</td>
+                <td>
+                    <a href="{{ path('sadmin_song_show', { 'id': song.id }) }}">show</a> / <a href="{{ path('sadmin_song_edit', { 'id': song.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+            <a href="{{ path('sadmin_song_new') }}">Create a new song</a>
+        </li>
+    </ul>
+{% endblock %}

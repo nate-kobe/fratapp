@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Culte
@@ -20,6 +21,11 @@ class Culte
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $title;
 
     /**
      * @var \DateTime
@@ -44,9 +50,9 @@ class Culte
     private $presentation;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\OneToMany(targetEntity="UploadedFileDesignCulte", mappedBy="culte")
      */
-    private $banner;
+    private $images;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -59,7 +65,7 @@ class Culte
     private $band;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="time", nullable=true)
      */
     private $bandRehearsal;
 
@@ -74,14 +80,37 @@ class Culte
     private $structure;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $stScene;
+    private $infos;
+
+    private $instruments;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $instrumentsStr;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $infos;
+    private $worshipStructure;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Song", inversedBy="cultes")
+     */
+    private $songs;
+
+    /* CONSTRUCTOR */
+    public function __construct()
+    {
+        $this->instruments = new ArrayCollection();
+        $this->instrumentsStr = new ArrayCollection();
+        $this->songs = new ArrayCollection();
+    }
+
+
+    /* GETTERS AND SETTERS */
 
     /**
      * Get id
@@ -92,6 +121,9 @@ class Culte
     {
         return $this->id;
     }
+
+    public function getTitle() {return $this->title;}
+    public function setTitle($title) {$this->title = $title;}
 
     /**
      * Set date
@@ -129,17 +161,14 @@ class Culte
     public function getPresentation() {return $this->presentation;}
     public function setPresentation($presentation) {$this->presentation = $presentation;}
 
-    public function getBanner() {return $this->banner;}
-    public function setBanner($banner) {$this->banner = $banner;}
+    public function getImages() {return $this->images;}
+    public function addImages($img) {$this->images[] = $img;}
 
     public function getSono() {return $this->sono;}
     public function setSono(User $user) {$this->sono = $user;}
 
     public function getStructure() {return $this->structure;}
     public function setStructure($str) {$this->structure = $str;}
-
-    public function getStScene() {return $this->stScene;}
-    public function setStScene($scene) {$this->stScene = $scene;}
 
     public function getBand() {return $this->band;}
     public function setBand($band) {$this->band = $band;}
@@ -149,4 +178,17 @@ class Culte
 
     public function getBandRehearsal() {return $this->bandRehearsal;}
     public function setBandRehearsal($bandRehearsal) {$this->bandRehearsal = $bandRehearsal;}
+
+    public function getInstruments() {return $this->instruments;}
+    public function setInstruments($i) {$this->instruments = $i;}
+    public function addInstruments($i) {$this->instruments[] = $i; $i->addCultes($this);}
+
+    public function getInstrumentsStr() {return $this->instrumentsStr;}
+    public function addInstrumentsStr($istr) {return $this->instrumentsStr[] = $istr;}
+
+    public function getWorshipStructure() {return $this->worshipStructure;}
+    public function setWorshipStructure($ws) {$this->worshipStructure = $ws;}
+
+    public function getSongs() {return $this->songs;}
+    public function addSongs($song) {$this->songs[] = $song; $song->addCultes($this);}
 }

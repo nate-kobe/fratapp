@@ -1,0 +1,111 @@
+{% extends 'base_user.html.twig' %}
+
+{% block body %}
+
+{% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
+
+    <div class="banner">
+        <h1>{{ culte.date|date('l d F') }} / Louange</h1>
+    </div>
+
+    <div class="container">
+    <br/><br/>
+        <div class="col-md-6 col-md-offset-3">
+        {{ form_start(edit_form) }}
+
+            <b>{{ form_label(edit_form.band)}}</b>
+            {{ form_errors(edit_form.band) }}
+            {{ form_widget(edit_form.band) }}
+            <br/><br/>
+
+            <b>{{ form_label(edit_form.bandRehearsal)}}</b>
+            {{ form_errors(edit_form.bandRehearsal) }}
+            {{ form_widget(edit_form.bandRehearsal) }}
+            <br/><br/>
+            <b>{{ form_label(edit_form.worshipStructure)}}</b>
+            <div class="row">
+            <div class="col-md-8">
+            Exemple sur le chant 732 « Bénis sois ton nom »
+            <pre style="line-height: 0.8">
+732 - Bénis sois ton nom<br/>
+In
+C1
+PR
+R
+C2
+PR
+R
+P (2x)
+R (2x)
+            </pre></div>
+            <div class="col-md-4">
+                Légende
+                <ul>
+                    <li>In : Intro</li>
+                    <li>PR : Pré-refrain</li>
+                    <li>R : Refrain</li>
+                    <li>C : Couplet</li>
+                    <li>P : Pont</li>
+                    <li>Inst : Instrumental</li>
+                </ul>
+            </div></div>
+
+            {{ form_errors(edit_form.worshipStructure) }}
+            {{ form_widget(edit_form.worshipStructure) }}
+            <br/><br/>
+
+            <b>{{ form_label(edit_form.instruments) }}</b>
+            {% for instrument in culte.instrumentsStr %}
+                <button class="btn btn-small btn-primary">{{ instrument }}</button>
+            {% endfor %}
+
+            <ul id="email-fields-list"
+                data-prototype="{{ form_widget(edit_form.instruments.vars.prototype)|e }}">
+                {% for field in edit_form.instruments %}
+                    <li>
+                        {{ form_errors(field) }}
+                        {{ form_widget(field) }}
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <a href="#" id="add-another-email"><span class="glyphicon glyphicon-plus"></span> </a>
+            
+            <br/><br/>
+            <div class="text-center">
+                <a href="{{ path('app_culte_show', {'id': culte.id}) }}" class="btn btn-large">Retour</a>
+                <input class="btn btn-submit btn-primary btn-large" type="submit" value="Edit" />
+            </div>
+        {{ form_end(edit_form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+    // keep track of how many email fields have been rendered
+    var emailCount = '{{ edit_form.instruments|length }}';
+
+    jQuery(document).ready(function() {
+        console.log(jQuery('#email-fields-list'));
+        jQuery('#add-another-email').click(function(e) {
+            e.preventDefault();
+
+            var emailList = jQuery('#email-fields-list');
+
+            // grab the prototype template
+            var newWidget = emailList.attr('data-prototype');
+            console.log(newWidget);
+            // replace the "__name__" used in the id and name of the prototype
+            // with a number that's unique to your emails
+            // end name attribute looks like name="contact[emails][2]"
+            newWidget = newWidget.replace(/__name__/g, emailCount);
+            emailCount++;
+
+            // create a new list element and add it to the list
+            var newLi = jQuery('<li></li>').html(newWidget);
+            newLi.appendTo(emailList);
+        });
+    })
+</script>
+{% endblock %}

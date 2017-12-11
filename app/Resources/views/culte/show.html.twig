@@ -7,19 +7,30 @@
     <br/>
 
     <div class="container">
-    {% if is_granted("ROLE_ADMIN") %}
-        <div class="container">
-            <button type="button" class="btn btn-danger btn-sm pull-right"><span class="glyphicon glyphicon-trash"></span> Remove</button>
-        </div>
-        <br/>
-    {% endif %}
-
+      <div class="btn-group pull-right" role="group">
+      {% if is_granted("ROLE_WORSHIP") %}
+        <a type="button" class="btn btn-primary btn-sm" href="{{ path('app_culteedit_band', { 'id' : culte.id}) }}" ><span class="glyphicon glyphicon-music"></span> Louange</a>
+      {% endif %}
+      {% if is_granted("ROLE_PRESIDENT") %}
+        <a type="button" class="btn btn-primary btn-sm" href="{{ path('app_culteedit_president', { 'id' : culte.id}) }}"><span class="glyphicon glyphicon-sunglasses"></span> Présidence</a>
+      {% endif %}
+      {% if is_granted("ROLE_PREACHER") %}
+        <a type="button" class="btn btn-primary btn-sm" href="{{ path('app_culteedit_president', { 'id' : culte.id}) }}"><span class="glyphicon glyphicon-bullhorn"></span> Prédication</a>
+      {% endif %}
+      {% if is_granted("ROLE_SONO") %}
+        <a type="button" class="btn btn-primary btn-sm" href="{{ path('app_culteedit_sono', { 'id' : culte.id}) }}" ><span class="glyphicon glyphicon-flash"></span> Sono</a>
+      {% endif %}
+      {% if is_granted("ROLE_ADMIN") %}
+        <a type="button" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Supprimer</a> 
+      {% endif %}
+      </div>
+    </div><br/>
 
 <div class="container">
     <div class="row">
         <div class="col-md-8">
         
-        {% if(culte.banner) %}
+        {% if not culte.images.isEmpty() %}
             <style type="text/css">
                 img.culte-img {
                   max-width: 100%;
@@ -47,10 +58,7 @@
                   content: '';
                 }
             </style>
-            {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>{% endif %}
-            <div class="hero-img"><img class="culte-img" src="{{ asset('uploads/banners/' ~ culte.banner) }}"/></div>
-        {% else %}
-            {% if(is_granted('ROLE_DESIGN')) %}<a href="{{ path('app_culte_design_update', {'id': culte.id}) }}"><span class="glyphicon glyphicon-picture"></span> Ajouter une image</a>{% endif %}
+            <div class="hero-img"><img class="culte-img" src="{{ asset('uploads/banners/' ~ culte.images[0].filename) }}"/></div>
         {% endif %}
 
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -70,7 +78,6 @@
     <div id="collapseInfos" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingInfos">
       <div class="panel-body">
         {{ culte.infos | raw }}
-        <br/><b>Sainte-cène</b> : {% if culte.stScene %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
       </div>
     </div>
   </div>
@@ -91,6 +98,26 @@
       <div class="panel-body">
         Prédication : <b>{{ culte.sermon }}</b> par {{ culte.preacher }}<br/><br/>
                 {% if(culte.presentation) %}<a class="btn btn-primary btn-small" href="{{ asset('uploads/presentations/' ~ culte.presentation) }}"><span class="glyphicon glyphicon-save"></span> Présentation</a>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingDesign">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseDesign" aria-expanded="true" aria-controls="collapseDesign">
+          Graphisme
+        </a>        
+      </h4>
+    </div>
+    <div id="collapseDesign" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDesign">
+      <div class="panel-body row">
+        {% for img in culte.images %}
+          <div class="col-md-3"><b>{{img.title}}</b> {% if is_granted("ROLE_DESIGN") %}<a href="{{ path('app_culteedit_rmimg', {'id' : culte.id, 'imgId' : img.id}) }}" class="pull-right"><span class="glyphicon glyphicon-trash"> </span></a>{% endif %}<img src="{{ asset('uploads/banners' ~ '/' ~ img.filename) }}" alt="{{ img.title }}" class="img-thumbnail"></div>
+        {% endfor %}
+        {% if is_granted("ROLE_DESIGN") %}
+          <div class="col-md-3"><a href="{{ path('app_culteedit_addimg', {'id': culte.id}) }}" class="btn btn-primary btn-large"><span class="glyphicon glyphicon-plus"></span> </a></div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -156,13 +183,13 @@
                 <a href="{{ path('app_culte_preacher_update', {'id': culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
             {% endif %}
             <br/>
-            Louange : <b>{{ culte.band.firstName }} {{ culte.band.lastName }} et son équipe</b>
+            Louange : <b>{% if culte.band %}{{ culte.band.firstName }} {{ culte.band.lastName }} et son équipe {% endif %}</b>
             {% if is_granted("ROLE_WORSHIP") %}
                 <a href="{{ path('app_culteedit_band', {'id' : culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
             {% endif %}
 
             <br/>
-            Présidence : <b>{{ culte.president.firstName }} {{ culte.president.lastName }}</b>
+            Présidence :{% if culte.president %} <b>{{ culte.president.firstName }} {{ culte.president.lastName }}{% endif %}</b>
             {% if is_granted("ROLE_PRESIDENT") %}
                 <a href="{{ path('app_culteedit_president', { 'id' : culte.id}) }}" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
             {% endif %}

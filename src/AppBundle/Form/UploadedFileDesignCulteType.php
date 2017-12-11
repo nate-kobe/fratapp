@@ -7,14 +7,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class DesignType extends AbstractType
+class UploadedFileDesignCulteType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('banner', FileType::class);
+        $builder->add('title')->add('file', FileType::class);
     }
     
     /**
@@ -23,7 +23,7 @@ class DesignType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Culte'
+            'data_class' => 'AppBundle\Entity\UploadedFileDesignCulte'
         ));
     }
 
@@ -32,7 +32,7 @@ class DesignType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_culte';
+        return 'appbundle_uploadedfiledesignculte';
     }
 
 

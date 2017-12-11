@@ -6,14 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CulteType extends AbstractType
+class SongType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('date')->add('title', array('label' => 'Titre', 'required' => false));
+        $builder->add('reference')->add('title');
     }
     
     /**
@@ -22,7 +22,7 @@ class CulteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Culte'
+            'data_class' => 'AppBundle\Entity\Song'
         ));
     }
 
@@ -31,7 +31,7 @@ class CulteType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_culte';
+        return 'appbundle_song';
     }
 
 

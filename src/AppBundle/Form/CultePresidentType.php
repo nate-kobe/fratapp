@@ -26,7 +26,7 @@ class CultePresidentType extends AbstractType
                 ->add('sermon', TextType::class, array('label' => 'Prédication '), array('required' => false))
                 ->add('structure', TextareaType::class, array('required' => false))
                 ->add('infos', TextareaType::class, array('required' => false))
-                ->add('stScene', CheckboxType::class, array('label' => 'Sainte-cène', 'required' => false));
+                ->add('title', array('label' => 'Titre', 'required' => false));
     }
     
     /**

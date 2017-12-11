@@ -1,10 +1,19 @@
 {% extends 'base_user.html.twig' %}
 
 {% block body %}
-    <h1>Culte edit</h1>
+    
+    {% form_theme edit_form 'bootstrap_3_layout.html.twig' %}
+	<div class="banner">
+        <h1>{{ culte.date|date('l d F') }} / Sono</h1>
+    </div>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    <div class="container text-center">
+    <br/><br/>
+    	<div class="col-md-2 col-md-offset-5">
+	    {{ form_start(edit_form) }}
+	        {{ form_widget(edit_form) }}
+	        <input class="btn btn-submit btn-primary btn-large" type="submit" value="Edit" />
+	    {{ form_end(edit_form) }}
+	    </div>
+	</div>
 {% endblock %}

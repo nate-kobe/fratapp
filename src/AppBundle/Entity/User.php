@@ -71,6 +71,14 @@ class User implements UserInterface, \Serializable
      */
     private $securityGroups;
 
+    /**
+     * @var smallint
+     * 
+     * 0 = invited, 1 = activated, 2 = locked
+     * @ORM\Column(name="state", type="smallint")
+     */
+    private $state;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -313,6 +321,9 @@ class User implements UserInterface, \Serializable
     {
         return $this->dtCreated;
     }
+
+    public function getState() {return $this->state;}
+    public function setState($state) {$this->state = $state;}
 
     /**
      * WARNING - DO NOT USE : call SecurityGroup->addUser() instead

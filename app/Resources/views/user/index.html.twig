@@ -11,6 +11,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Permissions</th>
@@ -19,6 +20,10 @@
         </thead>
         <tbody>{% for user in users %}
             <tr>
+                <td>{% if user.state == 0 %}<span class="label label-warning"><span class="glyphicon glyphicon-envelope"></span></span>
+                    {% elseif user.state == 1 %}<span class="label label-success"><span class="glyphicon glyphicon-ok"></span>
+                    {% else %}<span class="label label-danger"><span class="glyphicon glyphicon-remove"></span>
+                {% endif %}</td>
                 <td>{{ user.firstName }} {{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
                 <td>{% for group in user.securityGroups %}

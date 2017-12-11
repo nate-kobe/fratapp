@@ -1,0 +1,36 @@
+{% extends 'base_user.html.twig' %}
+
+{% block body %}
+    <h1>Song</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ song.id }}</td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td>{{ song.reference }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ song.title }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('sadmin_song_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('sadmin_song_edit', { 'id': song.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

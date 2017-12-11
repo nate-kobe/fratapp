@@ -2,16 +2,32 @@
 
 {% block title %}Inscription - {% endblock %}
 {% block body %}
-            <div id="page-title">
-                <h1>Registration</h1>
-            </div>
-            <div>
-            {{ form_start(form) }}
-			    {{ form_row(form.email) }}
-			    {{ form_row(form.plainPassword.first) }}
-			    {{ form_row(form.plainPassword.second) }}
+<div class="text-center">
+<br/>
+<br/>
+<img style="max-height: 100%" src="{{ asset('img/logo-text.png') }}" alt="La Fraternelle"/>
 
-			    <button type="submit">Register!</button>
-			{{ form_end(form) }}
-			</div>
+<br/><br/>
+{# {% if error %}
+    <div class="alert alert-danger" role="alert">{{ error.message }}</div>
+{% endif %} #}
+	<div class="alert alert-info">Vous avez été invité sur Frat'app par {{ inviter.firstName }} {{ inviter.lastName }}</div>
+
+	<div>
+		{# {{ form_start(form) }}
+	    {{ form_row(form.email) }}
+	    {{ form_row(form.plainPassword.first) }}
+	    {{ form_row(form.plainPassword.second) }} #}
+
+	    {{ form_start(form) }}
+	        {{ form_widget(form) }}
+	        <br/><input type="submit" value="Inscription" class="btn btn-primary" />
+	    {{ form_end(form) }}
+
+	{{ form_end(form) }}
+	</div>
+<br/><br/>
+</div>
+            
+            
 {% endblock %}

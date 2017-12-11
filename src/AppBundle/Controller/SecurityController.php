@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\UserInvite;
 use AppBundle\Form\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -40,20 +41,24 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/register", name="security_register")
+     * @Route("/register/{code}", name="security_register")
      */
-    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder) {
-        $user = new User();
+    public function registerAction(Request $request, $code, UserPasswordEncoderInterface $passwordEncoder) {
+        $em = $this->getDoctrine()->getManager();
+
+        $invite = $em->getRepository(UserInvite::Class)->findOneByCode($code);
+        if($invite == null || !$invite->isValid()) return $this->render('security/error_invite_invalid.html.twig');
+        $user = $invite->getUser();
         $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $em->remove($invite); 
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPwd($password);
             $user->setDtCreated(new \DateTime());
+            $user->setState(1);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
@@ -62,7 +67,8 @@ class SecurityController extends Controller
 
         return $this->render(
             'security/register.html.twig',
-            array('form' => $form->createView())
+            array('form' => $form->createView(),
+                    'inviter' => $invite->getInviter())
         );
     }
 

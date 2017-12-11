@@ -15,6 +15,7 @@ class CulteSonoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('sono', EntityType::class, array(
+            'label' => 'Sonorisateur',
             // query choices from this entity
             'class' => 'AppBundle:User',
 
